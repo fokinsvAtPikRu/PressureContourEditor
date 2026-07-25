@@ -12,38 +12,23 @@ namespace PressureContourEditor.Domain.Entities
         private GeometryContour _contour6H0;
         
         public PunchingContourType Type { get; set; }
-        public List<ContourSideName> ActiveSides { get; }
-        public Dictionary<string, double> DoubleParameters { get; set; }
-        public Dictionary<string, int> IntParameters { get; set; }
+        public HashSet<ContourSideName> ActiveSides { get; }
+        public Dictionary<DimensionsRole,double> Dimensions { get; set; }
+        public Dictionary<DoubleParametersRole, double> DoubleParameters { get; set; }
+        public Dictionary<IntParametersRole, int> IntParameters { get; set; }
         
 
         public PunchingContourParameters(
             PunchingContourType type,
-            Dictionary<string, double> doubleParameters,
-            Dictionary<string, int> intParameters)
+            HashSet<ContourSideName> activeSides,
+            Dictionary<DimensionsRole,double> dimensions,
+            Dictionary<DoubleParametersRole, double> doubleParameters,
+            Dictionary<IntParametersRole, int> intParameters)
         {
             Type = type;
+            ActiveSides = activeSides;
             DoubleParameters = doubleParameters;
-            IntParameters = intParameters;
-            ActiveSides = new List<ContourSideName>();
-            switch (type)
-            {
-                case PunchingContourType.EndWall:
-                    ActiveSides.Add(ContourSideName.Left);
-                    ActiveSides.Add(ContourSideName.Bottom);
-                    ActiveSides.Add(ContourSideName.Right);
-                    break;
-                case PunchingContourType.WallCorner:
-                    ActiveSides.Add(ContourSideName.Bottom);
-                    ActiveSides.Add(ContourSideName.Right);
-                    break;
-                case PunchingContourType.Pylon:
-                    ActiveSides.Add(ContourSideName.Top);
-                    ActiveSides.Add(ContourSideName.Left);
-                    ActiveSides.Add(ContourSideName.Bottom);
-                    ActiveSides.Add(ContourSideName.Right);
-                    break;
-            }
+            IntParameters = intParameters;            
         }
     }
 }
