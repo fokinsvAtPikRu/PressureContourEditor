@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="PressureContourEditor.Domain.Tests/PressureContourEditor.Domain.Tests.csproj" Id="fc4a7367-35c2-403a-93a2-cb891eec218e" />
   <Project Path="PressureContourEditor/PressureContourEditor.Domain.csproj" />
 </Solution>
