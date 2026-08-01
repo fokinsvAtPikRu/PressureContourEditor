@@ -8,11 +8,11 @@ namespace PressureContourEditor.Domain.Services
 {
     public class CreateContourService : ICreateContourService
     {
-        public Result<GeometryContour> CreateContour(PunchingContourParameters punchingContour, double offset)
+        public GeometryContour CreateContour(PunchingContourParameters punchingContour, double offset)
         {
             if (!punchingContour.IsNotNullOrEmptyParameters(out string errorMessage))
-                return Result.Failure<GeometryContour>(errorMessage);
-
+                            
+                return new GeometryContour(errorMessage);
             Point2D bottomRight;
             Point2D bottomLeft;
             Point2D topRight;
@@ -48,7 +48,7 @@ namespace PressureContourEditor.Domain.Services
                     center = new Point2D(0, 0);
                     break;
                 default:
-                    return Result.Failure<GeometryContour>($"{punchingContour.Type} не поддерживается");
+                    return new GeometryContour($"{punchingContour.Type} не поддерживается");
 
             }
 
@@ -64,7 +64,7 @@ namespace PressureContourEditor.Domain.Services
             for (var i=0;i<contourLines.Length;i++)
             {
                 if (!contour.TryAddItem((ContourSideName)values.GetValue(i), contourLines[i]))
-                    return Result.Failure<GeometryContour>($"Не удалорсь добавить сторону {(ContourSideName)values.GetValue(i)}");
+                    return new GeometryContour($"Не удалорсь добавить сторону {(ContourSideName)values.GetValue(i)}");
             }
 
             return contour;

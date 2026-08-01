@@ -1,11 +1,11 @@
-﻿using PressureContourEditor.Domain.GeometryPrimitives;
+﻿using PressureContourEditor.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PressureContourEditor.Domain.Entities
+namespace PressureContourEditor.Domain.GeometryPrimitives
 {
     public class IntersectionPoint
     {

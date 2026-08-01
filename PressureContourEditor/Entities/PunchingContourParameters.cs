@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PressureContourEditor.Domain.Abstraction;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,29 +9,40 @@ namespace PressureContourEditor.Domain.Entities
 {
     public class PunchingContourParameters
     {
-        private GeometryContour _contourHalfH0;
-        private GeometryContour _contour6H0;
-        
+        private readonly ICreateContourService _createContourService;
         public PunchingContourType Type { get; set; }
         public HashSet<ContourSideName> ActiveSides { get; set; }
         public Dictionary<DimensionsRole,double> Dimensions { get; set; }
         public Dictionary<DoubleParametersRole, double> DoubleParameters { get; set; }
         public Dictionary<IntParametersRole, int> IntParameters { get; set; }
-        
+
+        public GeometryContour ContourHalfH0 { get; }
+        public GeometryContour Contour6H0 { get; }
+
+
 
         public PunchingContourParameters(
+            ICreateContourService createContourService,
             PunchingContourType type,
             HashSet<ContourSideName> activeSides,
             Dictionary<DimensionsRole,double> dimensions,
             Dictionary<DoubleParametersRole, double> doubleParameters,
             Dictionary<IntParametersRole, int> intParameters)
         {
+            _createContourService = createContourService;
             Type = type;
             ActiveSides = activeSides;
             Dimensions = dimensions;
             DoubleParameters = doubleParameters;
-            IntParameters = intParameters;            
+            IntParameters = intParameters;
+
+            double h0 = DoubleParameters[DoubleParametersRole.H0];
+
+            ContourHalfH0 = _createContourService.CreateContour(this, 0.5 * h0);
+            Contour6H0 = _createContourService.CreateContour(this, 6 * h0);
         }
+
+
 
         public bool IsNotNullOrEmptyParameters(out string errorMessage)
         {

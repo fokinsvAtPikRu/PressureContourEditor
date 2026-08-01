@@ -1,13 +1,8 @@
-﻿using CSharpFunctionalExtensions;
-using PressureContourEditor.Domain.Abstraction;
+﻿using PressureContourEditor.Domain.Abstraction;
+using Moq;
 using PressureContourEditor.Domain.Entities;
 using PressureContourEditor.Domain.GeometryPrimitives;
 using PressureContourEditor.Domain.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PressureContourEditor.Domain.Tests
 {
@@ -40,6 +35,7 @@ namespace PressureContourEditor.Domain.Tests
             intParameters.Add(IntParametersRole.EditContourEnabled, 1);
 
             _punchingContour = new PunchingContourParameters(
+                _createContourService,
                 type,
                 activeSides,
                 dimensions,
@@ -56,22 +52,22 @@ namespace PressureContourEditor.Domain.Tests
             // Act
             var result = _createContourService.CreateContour(_punchingContour, offset);
             
-            Point2D topRight = result.Value.Lines[ContourSideName.Top].StartPoint;
-            Point2D topLeft = result.Value.Lines[ContourSideName.Top].EndPoint;
-            Point2D bottomLeft = result.Value.Lines[ContourSideName.Bottom].StartPoint;
-            Point2D bottomRight = result.Value.Lines[ContourSideName.Bottom].EndPoint;
+            Point2D topRight = result.Lines[ContourSideName.Top].StartPoint;
+            Point2D topLeft = result.Lines[ContourSideName.Top].EndPoint;
+            Point2D bottomLeft = result.Lines[ContourSideName.Bottom].StartPoint;
+            Point2D bottomRight = result.Lines[ContourSideName.Bottom].EndPoint;
 
             Point2D topRightExpected = new Point2D(200, 400);
             Point2D topLeftExpected = new Point2D(-200, 400);
             Point2D bottomLeftExpected = new Point2D(-200, -400);
-            Point2D bottomRightExpected = new Point2D(-200, 400);
+            Point2D bottomRightExpected = new Point2D(200, -400);
 
             // Assert            
-            Assert.IsTrue(result.IsSuccess);
-            Assert.AreEqual(topRightExpected, topRight,0.0000001);
-            Assert.AreEqual(topLeftExpected, topLeft, 0.0000001);
-            Assert.AreEqual(bottomLeftExpected, bottomRight, 0.0000001);
-            Assert.AreEqual(bottomRightExpected, bottomRight, 0.0000001);
+            Assert.AreEqual(String.Empty,result.ErrorMessage);
+            Assert.AreEqual(topRightExpected, topRight);
+            Assert.AreEqual(topLeftExpected, topLeft);
+            Assert.AreEqual(bottomLeftExpected, bottomLeft);
+            Assert.AreEqual(bottomRightExpected, bottomRight);
         }
 
     }

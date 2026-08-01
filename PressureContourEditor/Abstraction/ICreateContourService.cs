@@ -10,6 +10,6 @@ namespace PressureContourEditor.Domain.Abstraction
 {
     public interface ICreateContourService
     {
-        public Result<GeometryContour> CreateContour(PunchingContourParameters punchingContour, double offset);
+        public GeometryContour CreateContour(PunchingContourParameters punchingContour, double offset);
     }
 }
