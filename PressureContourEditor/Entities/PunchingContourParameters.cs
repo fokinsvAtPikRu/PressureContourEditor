@@ -19,7 +19,15 @@ namespace PressureContourEditor.Domain.Entities
         public GeometryContour ContourHalfH0 { get; }
         public GeometryContour Contour6H0 { get; }
 
-
+        /// <summary>
+        /// Создание экземпляра зоны приложения продавливающего усилия для расчета на продавливания
+        /// </summary>
+        /// <param name="createContourService">Сервис для создания геометрического контура</param>
+        /// <param name="type">Тип расчета: край стены, угол стен или пилон</param>
+        /// <param name="activeSides">в зависимости от типа расчета какие стороны учитываются</param>
+        /// <param name="dimensions">размеры зона продавливания</param>
+        /// <param name="doubleParameters">характеристики для расчета</param>
+        /// <param name="intParameters">для активации в ревите разрешения для редакторования - перенести в инфраструктурный слой</param>
 
         public PunchingContourParameters(
             ICreateContourService createContourService,

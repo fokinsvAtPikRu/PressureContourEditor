@@ -51,7 +51,8 @@
             double u = ((x3 - x1) * dy1 - (y3 - y1) * dx1) / det;
 
             // Проверяем, лежит ли точка пересечения в пределах отрезков
-            bool intersectsSegments = (t >= 0 && t <= 1 && u >= 0 && u <= 1);
+            if(! (t >= 0 && t <= 1 && u >= 0 && u <= 1))
+                return false;
 
             // Вычисляем точку пересечения
             double px = x1 + t * dx1;

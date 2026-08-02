@@ -1,5 +1,4 @@
 ﻿using PressureContourEditor.Domain.Abstraction;
-using Moq;
 using PressureContourEditor.Domain.Entities;
 using PressureContourEditor.Domain.GeometryPrimitives;
 using PressureContourEditor.Domain.Services;

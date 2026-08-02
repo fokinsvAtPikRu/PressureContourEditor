@@ -1,20 +1,21 @@
 ﻿using PressureContourEditor.Domain.GeometryPrimitives;
+using System.Collections;
 
 namespace PressureContourEditor.Domain.Entities
 {
-    public class GeometryContour
+    public class GeometryContour : IEnumerable<KeyValuePair<ContourSideName, Line2D>>
     {
-        public SortedDictionary<ContourSideName,Line2D> Lines { get; set; }
+        public SortedDictionary<ContourSideName, Line2D> Lines { get; set; }
         public string ErrorMessage { get; set; }
 
-        public GeometryContour() 
+        public GeometryContour()
         {
-            Lines=[];
+            Lines = [];
             ErrorMessage = string.Empty;
         }
-        public GeometryContour(string errorMessage) 
+        public GeometryContour(string errorMessage)
         {
-            Lines=[];
+            Lines = [];
             ErrorMessage = errorMessage;
         }
 
@@ -30,6 +31,16 @@ namespace PressureContourEditor.Domain.Entities
                 return false;
             }
             return true;
+        }
+
+        public IEnumerator<KeyValuePair<ContourSideName, Line2D>> GetEnumerator()
+        {
+            return Lines.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

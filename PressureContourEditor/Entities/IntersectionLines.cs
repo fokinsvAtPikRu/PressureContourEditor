@@ -9,13 +9,13 @@ namespace PressureContourEditor.Domain.Entities
 {
     public class IntersectionLines
     {
-        private Line2D _firstLine;
-        private Line2D _secondLine;
+        public Line2D FirstLine { get; }
+        public Line2D SecondLine { get; }
 
         public IntersectionLines(Line2D firstLine, Line2D secondLine) 
         {
-            _firstLine = firstLine;
-            _secondLine = secondLine;        
+            FirstLine = firstLine;
+            SecondLine = secondLine;        
         }
     }
 }
