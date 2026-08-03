@@ -16,4 +16,8 @@
     <ProjectReference Include="..\PressureContourEditor\PressureContourEditor.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstraction\" />
+  </ItemGroup>
+
 </Project>

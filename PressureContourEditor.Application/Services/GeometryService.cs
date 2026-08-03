@@ -1,26 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
-using PressureContourEditor.Application.Abstraction;
 using PressureContourEditor.Domain.Abstraction;
-using PressureContourEditor.Domain.Configuration;
 using PressureContourEditor.Domain.Entities;
 using PressureContourEditor.Domain.GeometryPrimitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PressureContourEditor.Domain.Services
 {
     public class GeometryService : IGeometryService
     {
-        private readonly IParameterNameConfig _parameterNameConfig;
-
-        public GeometryService(IParameterNameConfig parameterNameConfig)
-        {
-            _parameterNameConfig = parameterNameConfig;
-        }        
-
         /// <summary>
         /// Находит точки пересечения двух секущих линий с геометрическим контуром
         /// </summary>
@@ -45,7 +31,9 @@ namespace PressureContourEditor.Domain.Services
             return points;
         }
 
-        public Result<Dictionary<ParameterRole,double>> CalculateParameters(PunchingContourParameters parameters, List<IntersectionPoint> intersectionPoints)
+        public Result<Dictionary<DoubleParametersRole,double>> CalculateParameters(
+            IPunchingContourParameters parameters, 
+            List<IntersectionPoint> intersectionPoints)
         {
             throw new NotImplementedException();
         }

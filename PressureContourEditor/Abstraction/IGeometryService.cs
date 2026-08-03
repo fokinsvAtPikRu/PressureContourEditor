@@ -9,6 +9,6 @@ namespace PressureContourEditor.Domain.Abstraction
     {
         public Result<List<IntersectionPoint>> LineWithContourIntersection(IntersectionLines lines, GeometryContour contour);
 
-        public Result<Dictionary<ParameterRole, double>> CalculateParameters(PunchingContourParameters parameters, List<IntersectionPoint> intersectionPoints);
+        public Result<Dictionary<DoubleParametersRole, double>> CalculateParameters(IPunchingContourParameters parameters, List<IntersectionPoint> intersectionPoints);
     }
 }

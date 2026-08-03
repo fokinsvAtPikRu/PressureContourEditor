@@ -1,27 +1,21 @@
 using Moq;
-using PressureContourEditor.Application.Abstraction;
 using PressureContourEditor.Domain.Abstraction;
 using PressureContourEditor.Domain.Entities;
 using PressureContourEditor.Domain.GeometryPrimitives;
 using PressureContourEditor.Domain.Services;
-using PressureContourEditor.Domain.Configuration;
 
 namespace PressureContourEditor.ApplicationTests
 {
     public class GeometryServiceTests
     {
-        private IParameterNameConfig _parameterNameConfig;
         private IGeometryService _service;
         private GeometryContour _contour;
         private IntersectionLines _lines;
         [SetUp]
         public void Setup()
         {
-            var mockConfig = new Mock<IParameterNameConfig>();          
-
-            _service = new GeometryService(mockConfig.Object);
+            _service = new GeometryService();
             _contour = new GeometryContour();
-
         }
 
         [Test]
@@ -82,14 +76,44 @@ namespace PressureContourEditor.ApplicationTests
             Assert.AreEqual(expectedSecondPoint.SideName, result.Value[1].SideName);
         }
 
-        public void CalculateParameter_ValidParameters_HoleOnBottom()
+        [Test]
+        public void CalculateParameter_ValidParameters_HoleOnLeft()
         {
             // Arrange
-            moc
+            Line2D top = new Line2D(new Point2D(100, 100), new Point2D(-100, 100));
+            Line2D left = new Line2D(new Point2D(-100, 100), new Point2D(-100, -100));
+            Line2D bottom = new Line2D(new Point2D(-100, -100), new Point2D(100, -100));
+            Line2D right = new Line2D(new Point2D(100, -100), new Point2D(100, 100));
+
+            _contour = new GeometryContour();
+            _contour.TryAddItem(ContourSideName.Top, top);
+            _contour.TryAddItem(ContourSideName.Left, left);
+            _contour.TryAddItem(ContourSideName.Bottom, bottom);
+            _contour.TryAddItem(ContourSideName.Right, right);
+
+            IntersectionPoint point1 = new IntersectionPoint(new Point2D(-100, 0), ContourSideName.Left);
+            IntersectionPoint point2 = new IntersectionPoint(new Point2D(-100, 50), ContourSideName.Left);
+            List<IntersectionPoint> intersectionPoints = new List<IntersectionPoint>();
+            intersectionPoints.Add(point1);
+            intersectionPoints.Add(point2);
+
+            var doubleParameters = new Dictionary<DoubleParametersRole, double>
+            {
+                { DoubleParametersRole.LeftSideHoleWidth, 0.0 },
+                { DoubleParametersRole.LeftSideHoleOffsetFromTop, 0.0 }                
+            };
+
+            var mockParameters = new Mock<IPunchingContourParameters>();
+            mockParameters.Setup(p => p.ContourHalfH0)
+                .Returns(_contour);
+            mockParameters.Setup(p => p.DoubleParameters)
+                .Returns(doubleParameters);            
+
             // Act
-
+            var result = _service.CalculateParameters(mockParameters.Object, intersectionPoints);
             // Assert
-
+            Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(50.0, result.Value[DoubleParametersRole.LeftSideHoleWidth]);
         }
     }
 }

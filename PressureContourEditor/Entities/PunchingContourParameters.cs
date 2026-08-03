@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PressureContourEditor.Domain.Entities
 {
-    public class PunchingContourParameters
+    public class PunchingContourParameters : IPunchingContourParameters
     {
         private readonly ICreateContourService _createContourService;
         public PunchingContourType Type { get; set; }
