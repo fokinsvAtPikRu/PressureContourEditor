@@ -8,7 +8,7 @@ namespace PressureContourEditor.Domain.Tests
     public class CreateContourServiceTests
     {
         private ICreateContourService _createContourService;
-        private PunchingContourParameters _punchingContour;
+        private PunchingContour _punchingContour;
 
         [SetUp]
         public void Setup()
@@ -27,8 +27,8 @@ namespace PressureContourEditor.Domain.Tests
             dimensions.Add(DimensionsRole.Thickness, 400.0);
             dimensions.Add(DimensionsRole.PylonLength, 800.0);
 
-            Dictionary<DoubleParametersRole, double> doubleParameters = new Dictionary<DoubleParametersRole, double>();
-            doubleParameters.Add(DoubleParametersRole.H0, 160.0);
+            Dictionary<PressureContourParametersRole, double> doubleParameters = new Dictionary<PressureContourParametersRole, double>();
+            doubleParameters.Add(PressureContourParametersRole.H0, 160.0);
 
             Dictionary<IntParametersRole, int> intParameters = new Dictionary<IntParametersRole, int>();
             intParameters.Add(IntParametersRole.EditContourEnabled, 1);

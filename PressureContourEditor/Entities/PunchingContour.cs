@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace PressureContourEditor.Domain.Entities
 {
-    public class PunchingContourParameters : IPunchingContourParameters
+    public class PunchingContour : IPunchingContour
     {
         private readonly ICreateContourService _createContourService;
         public PunchingContourType Type { get; set; }
         public HashSet<ContourSideName> ActiveSides { get; set; }
         public Dictionary<DimensionsRole,double> Dimensions { get; set; }
-        public Dictionary<DoubleParametersRole, double> DoubleParameters { get; set; }
-        public Dictionary<IntParametersRole, int> IntParameters { get; set; }
+        public double H0 { get; }
+        public Dictionary<(ContourSideName, PressureContourParametersRole), double> Parameters { get; set; }      
 
         public GeometryContour ContourHalfH0 { get; }
         public GeometryContour Contour6H0 { get; }
+        
 
         /// <summary>
         /// Создание экземпляра зоны приложения продавливающего усилия для расчета на продавливания
@@ -29,22 +30,20 @@ namespace PressureContourEditor.Domain.Entities
         /// <param name="doubleParameters">характеристики для расчета</param>
         /// <param name="intParameters">для активации в ревите разрешения для редакторования - перенести в инфраструктурный слой</param>
 
-        public PunchingContourParameters(
+        public PunchingContour(
             ICreateContourService createContourService,
             PunchingContourType type,
             HashSet<ContourSideName> activeSides,
             Dictionary<DimensionsRole,double> dimensions,
-            Dictionary<DoubleParametersRole, double> doubleParameters,
-            Dictionary<IntParametersRole, int> intParameters)
+            double h0,
+            Dictionary<(ContourSideName, PressureContourParametersRole), double> parameters)
         {
             _createContourService = createContourService;
             Type = type;
             ActiveSides = activeSides;
             Dimensions = dimensions;
-            DoubleParameters = doubleParameters;
-            IntParameters = intParameters;
-
-            double h0 = DoubleParameters[DoubleParametersRole.H0];
+            H0 = h0;
+            Parameters = parameters;                    
 
             ContourHalfH0 = _createContourService.CreateContour(this, 0.5 * h0);
             Contour6H0 = _createContourService.CreateContour(this, 6 * h0);
@@ -72,26 +71,16 @@ namespace PressureContourEditor.Domain.Entities
                 errorMessage = AddReturn(errorMessage);
                 errorMessage += "Dimensions is empty";
             }
-            if (DoubleParameters == null)
+            if (Parameters == null)
             {
                 errorMessage = AddReturn(errorMessage);
                 errorMessage += "DoubleParameters is null";
             }
-            if (DoubleParameters != null && DoubleParameters.Count == 0)
+            if (Parameters != null && Parameters.Count == 0)
             {
                 errorMessage = AddReturn(errorMessage);
                 errorMessage += "DoubleParameters is empty";
-            }
-            if (IntParameters == null)
-            {
-                errorMessage = AddReturn(errorMessage);
-                errorMessage += "IntParameters is null";
-            }
-            if (IntParameters != null && IntParameters.Count == 0)
-            {
-                errorMessage = AddReturn(errorMessage);
-                errorMessage += "IntParameters is empty";
-            }
+            }            
             return String.IsNullOrEmpty(errorMessage);
                 
         }

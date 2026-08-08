@@ -12,7 +12,7 @@ namespace PressureContourEditor.Tests.Domain.Entities
     {
         private Mock<ICreateContourService> _moqCreateContourService;
         private GeometryContour _moqContour;
-        private PunchingContourParameters _punchingContour;
+        private PunchingContour _punchingContour;
         
         [SetUp]
         public void Setup()
@@ -21,7 +21,7 @@ namespace PressureContourEditor.Tests.Domain.Entities
             _moqContour = new GeometryContour();
 
             _moqCreateContourService
-                .Setup(x => x.CreateContour(It.IsAny<PunchingContourParameters>(), It.IsAny<double>()))
+                .Setup(x => x.CreateContour(It.IsAny<PunchingContour>(), It.IsAny<double>()))
                 .Returns(_moqContour);
 
             PunchingContourType type = PunchingContourType.Pylon;
@@ -36,8 +36,8 @@ namespace PressureContourEditor.Tests.Domain.Entities
             dimensions.Add(DimensionsRole.Thickness, 400.0);
             dimensions.Add(DimensionsRole.PylonLength, 800.0);
 
-            Dictionary< DoubleParametersRole, double> doubleParameters = new Dictionary<DoubleParametersRole, double>();
-            doubleParameters.Add(DoubleParametersRole.H0, 160.0);
+            Dictionary< PressureContourParametersRole, double> doubleParameters = new Dictionary<PressureContourParametersRole, double>();
+            doubleParameters.Add(PressureContourParametersRole.H0, 160.0);
 
             Dictionary<IntParametersRole, int> intParameters =new Dictionary<IntParametersRole, int>();
             intParameters.Add(IntParametersRole.EditContourEnabled, 1);
@@ -66,8 +66,8 @@ namespace PressureContourEditor.Tests.Domain.Entities
             dimensions.Add(DimensionsRole.Thickness, 400.0);
             dimensions.Add(DimensionsRole.PylonLength, 800.0);
 
-            Dictionary<DoubleParametersRole, double> doubleParameters = new Dictionary<DoubleParametersRole, double>();
-            doubleParameters.Add(DoubleParametersRole.H0, 160.0);
+            Dictionary<PressureContourParametersRole, double> doubleParameters = new Dictionary<PressureContourParametersRole, double>();
+            doubleParameters.Add(PressureContourParametersRole.H0, 160.0);
 
             Dictionary<IntParametersRole, int> intParameters = new Dictionary<IntParametersRole, int>();
             intParameters.Add(IntParametersRole.EditContourEnabled, 1);

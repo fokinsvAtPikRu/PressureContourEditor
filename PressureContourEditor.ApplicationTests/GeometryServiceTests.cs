@@ -3,6 +3,7 @@ using PressureContourEditor.Domain.Abstraction;
 using PressureContourEditor.Domain.Entities;
 using PressureContourEditor.Domain.GeometryPrimitives;
 using PressureContourEditor.Domain.Services;
+using System.Runtime.CompilerServices;
 
 namespace PressureContourEditor.ApplicationTests
 {
@@ -97,23 +98,14 @@ namespace PressureContourEditor.ApplicationTests
             intersectionPoints.Add(point1);
             intersectionPoints.Add(point2);
 
-            var doubleParameters = new Dictionary<DoubleParametersRole, double>
-            {
-                { DoubleParametersRole.LeftSideHoleWidth, 0.0 },
-                { DoubleParametersRole.LeftSideHoleOffsetFromTop, 0.0 }                
-            };
-
-            var mockParameters = new Mock<IPunchingContourParameters>();
-            mockParameters.Setup(p => p.ContourHalfH0)
-                .Returns(_contour);
-            mockParameters.Setup(p => p.DoubleParameters)
-                .Returns(doubleParameters);            
+            var expectedParameters = new Dictionary<(ContourSideName, PressureContourParametersRole), double>();
+            expectedParameters.Add((ContourSideName.Left, PressureContourParametersRole.HoleOffsetFromStart), 50.0);
+            expectedParameters.Add((ContourSideName.Left, PressureContourParametersRole.HoleWidth), 50.0);
 
             // Act
-            var result = _service.CalculateParameters(mockParameters.Object, intersectionPoints);
+            var actualParameters = _service.CalculateParameters(_contour, intersectionPoints);
             // Assert
-            Assert.IsTrue(result.IsSuccess);
-            Assert.AreEqual(50.0, result.Value[DoubleParametersRole.LeftSideHoleWidth]);
+            Assert.That(actualParameters.Value, Is.EqualTo(expectedParameters));
         }
     }
 }
