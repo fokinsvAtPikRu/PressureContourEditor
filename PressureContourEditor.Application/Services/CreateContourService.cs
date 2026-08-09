@@ -10,15 +10,15 @@ namespace PressureContourEditor.Domain.Services
     {
         public GeometryContour CreateContour(PunchingContour punchingContour, double offset)
         {
-            if (!punchingContour.IsNotNullOrEmptyParameters(out string errorMessage))
-                            
+            if (!punchingContour.IsNotNullOrEmptyParameters(out string errorMessage))                            
                 return new GeometryContour(errorMessage);
+
             Point2D bottomRight;
             Point2D bottomLeft;
             Point2D topRight;
             Point2D topLeft;
             Point2D center;
-            double h0 = punchingContour.Parameters[PressureContourParametersRole.H0];
+            double h0 = punchingContour.H0;
             double thickness = punchingContour.Dimensions[DimensionsRole.Thickness];
 
             switch (punchingContour.Type)

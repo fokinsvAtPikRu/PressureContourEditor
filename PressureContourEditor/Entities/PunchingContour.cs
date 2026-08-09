@@ -38,13 +38,14 @@ namespace PressureContourEditor.Domain.Entities
             double h0,
             Dictionary<(ContourSideName, PressureContourParametersRole), double> parameters)
         {
-            _createContourService = createContourService;
+            _createContourService = createContourService ?? throw new ArgumentNullException(nameof(createContourService));
             Type = type;
-            ActiveSides = activeSides;
-            Dimensions = dimensions;
+            ActiveSides = activeSides ?? throw new ArgumentNullException(nameof(activeSides));
+            Dimensions = dimensions ?? throw new ArgumentNullException(nameof(dimensions));
+            if (h0<0)
+                throw new ArgumentException("H0 must be greater than zero", nameof(h0));
             H0 = h0;
-            Parameters = parameters;                    
-
+            Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));                    
             ContourHalfH0 = _createContourService.CreateContour(this, 0.5 * h0);
             Contour6H0 = _createContourService.CreateContour(this, 6 * h0);
         }
