@@ -1,9 +1,4 @@
 ﻿using PressureContourEditor.Domain.Abstraction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PressureContourEditor.Domain.Entities
 {
@@ -75,12 +70,12 @@ namespace PressureContourEditor.Domain.Entities
             if (Parameters == null)
             {
                 errorMessage = AddReturn(errorMessage);
-                errorMessage += "DoubleParameters is null";
+                errorMessage += "Parameters is null";
             }
             if (Parameters != null && Parameters.Count == 0)
             {
                 errorMessage = AddReturn(errorMessage);
-                errorMessage += "DoubleParameters is empty";
+                errorMessage += "Parameters is empty";
             }            
             return String.IsNullOrEmpty(errorMessage);
                 

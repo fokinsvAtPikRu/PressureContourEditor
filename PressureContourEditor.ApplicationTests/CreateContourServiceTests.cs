@@ -27,19 +27,18 @@ namespace PressureContourEditor.Domain.Tests
             dimensions.Add(DimensionsRole.Thickness, 400.0);
             dimensions.Add(DimensionsRole.PylonLength, 800.0);
 
-            Dictionary<PressureContourParametersRole, double> doubleParameters = new Dictionary<PressureContourParametersRole, double>();
-            doubleParameters.Add(PressureContourParametersRole.H0, 160.0);
+            double h0 = 160.0;
 
-            Dictionary<IntParametersRole, int> intParameters = new Dictionary<IntParametersRole, int>();
-            intParameters.Add(IntParametersRole.EditContourEnabled, 1);
+            Dictionary<(ContourSideName, PressureContourParametersRole), double> parameters = new();
+            parameters.Add((ContourSideName.Left, PressureContourParametersRole.OffsetFromEnd), 0.0);
 
-            _punchingContour = new PunchingContourParameters(
+            _punchingContour = new PunchingContour(
                 _createContourService,
                 type,
                 activeSides,
                 dimensions,
-                doubleParameters,
-                intParameters);
+                h0,
+                parameters);
         }
 
         [Test]
@@ -50,7 +49,7 @@ namespace PressureContourEditor.Domain.Tests
 
             // Act
             var result = _createContourService.CreateContour(_punchingContour, offset);
-            
+
             Point2D topRight = result.Lines[ContourSideName.Top].StartPoint;
             Point2D topLeft = result.Lines[ContourSideName.Top].EndPoint;
             Point2D bottomLeft = result.Lines[ContourSideName.Bottom].StartPoint;
@@ -62,7 +61,7 @@ namespace PressureContourEditor.Domain.Tests
             Point2D bottomRightExpected = new Point2D(200, -400);
 
             // Assert            
-            Assert.AreEqual(String.Empty,result.ErrorMessage);
+            Assert.AreEqual(String.Empty, result.ErrorMessage);
             Assert.AreEqual(topRightExpected, topRight);
             Assert.AreEqual(topLeftExpected, topLeft);
             Assert.AreEqual(bottomLeftExpected, bottomLeft);

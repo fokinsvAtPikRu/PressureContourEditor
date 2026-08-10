@@ -246,29 +246,17 @@ namespace PressureContourEditor.Tests.Domain.Entities
         public void IsNotNullOrEmptyParameters_DoubleParameterIsEmpty_ErrorMessage()
         {
             // Arrange
-            _punchingContour.DoubleParameters.Clear();
+            _punchingContour.Parameters.Clear();
 
             // Act
             var result = _punchingContour.IsNotNullOrEmptyParameters(out string errorMessage);
 
             // Assert
-            Assert.AreEqual("DoubleParameters is empty", errorMessage);
+            Assert.AreEqual("Parameters is empty", errorMessage);
             Assert.IsFalse(result);
         }
 
-        [Test]
-        public void IsNotNullOrEmptyParameters_IntParameterIsEmpty_ErrorMessage()
-        {
-            // Arrange
-            _punchingContour.IntParameters.Clear();
-
-            // Act
-            var result = _punchingContour.IsNotNullOrEmptyParameters(out string errorMessage);
-
-            // Assert
-            Assert.AreEqual("IntParameters is empty", errorMessage);
-            Assert.IsFalse(result);
-        }
+        
 
         [Test]
         public void IsNotNullOrEmptyParameters_CorrectParameters_ResultIsTrue()
