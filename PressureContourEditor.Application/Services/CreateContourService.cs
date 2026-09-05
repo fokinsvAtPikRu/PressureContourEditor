@@ -8,7 +8,7 @@ namespace PressureContourEditor.Domain.Services
 {
     public class CreateContourService : ICreateContourService
     {
-        public GeometryContour CreateContour(PunchingContour punchingContour, double offset)
+        public GeometryContour CreateContour(PressureContour punchingContour, double offset)
         {
             if (!punchingContour.IsNotNullOrEmptyParameters(out string errorMessage))                            
                 return new GeometryContour(errorMessage);
@@ -23,7 +23,7 @@ namespace PressureContourEditor.Domain.Services
 
             switch (punchingContour.Type)
             {
-                case PunchingContourType.EndWall:
+                case PressureContourType.EndWall:
 
                     bottomRight = new Point2D(thickness / 2 + offset, offset);
                     bottomLeft = new Point2D(thickness / 2 - offset, -offset);
@@ -31,7 +31,7 @@ namespace PressureContourEditor.Domain.Services
                     topLeft = new Point2D(-thickness / 2 - offset, thickness + 0.5 * h0);
                     center = new Point2D(0, (thickness + 0.5 * h0) * 0.5);
                     break;
-                case PunchingContourType.WallCorner:
+                case PressureContourType.WallCorner:
                     double thicness2 = punchingContour.Dimensions[DimensionsRole.Thickness2];
                     bottomRight = new Point2D(thickness / 2 + offset, offset);
                     bottomLeft = new Point2D(thickness + thicness2 - thickness / 2 - offset, -offset);
@@ -39,7 +39,7 @@ namespace PressureContourEditor.Domain.Services
                     topLeft = new Point2D(thickness + thicness2 - thickness / 2 - offset, thickness + thicness2);
                     center = new Point2D(0, (thickness + 0.5 * h0) * 0.5);
                     break;
-                case PunchingContourType.Pylon:
+                case PressureContourType.Pylon:
                     double length = punchingContour.Dimensions[DimensionsRole.PylonLength];
                     bottomRight = new Point2D(thickness / 2 + offset, -length / 2 - offset);
                     bottomLeft = new Point2D(-thickness / 2 - offset, -length / 2 - offset);

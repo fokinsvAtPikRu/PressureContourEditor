@@ -2,10 +2,10 @@
 
 namespace PressureContourEditor.Domain.Entities
 {
-    public class PunchingContour : IPunchingContour
+    public class PressureContour : IPressureContour
     {
         private readonly ICreateContourService _createContourService;
-        public PunchingContourType Type { get; set; }
+        public PressureContourType Type { get; set; }
         public HashSet<ContourSideName> ActiveSides { get; set; }
         public Dictionary<DimensionsRole,double> Dimensions { get; set; }
         public double H0 { get; }
@@ -25,9 +25,9 @@ namespace PressureContourEditor.Domain.Entities
         /// <param name="doubleParameters">характеристики для расчета</param>
         /// <param name="intParameters">для активации в ревите разрешения для редакторования - перенести в инфраструктурный слой</param>
 
-        public PunchingContour(
+        public PressureContour(
             ICreateContourService createContourService,
-            PunchingContourType type,
+            PressureContourType type,
             HashSet<ContourSideName> activeSides,
             Dictionary<DimensionsRole,double> dimensions,
             double h0,

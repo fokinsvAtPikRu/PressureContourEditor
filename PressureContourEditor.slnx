@@ -2,5 +2,6 @@
   <Project Path="PressureContourEditor.Application/PressureContourEditor.Application.csproj" Id="c2e8fcbe-5107-4387-8ec9-c20d0da6b0af" />
   <Project Path="PressureContourEditor.ApplicationTests/PressureContourEditor.ApplicationTests.csproj" Id="24a0ce03-1b3c-462e-9774-b369b18bc080" />
   <Project Path="PressureContourEditor.Domain.Tests/PressureContourEditor.Domain.Tests.csproj" Id="fc4a7367-35c2-403a-93a2-cb891eec218e" />
+  <Project Path="PressureContourEditor.Infrastacture/PressureContourEditor.Infrastacture.csproj" Id="0205c61f-6316-4644-be3c-53ca497f7add" />
   <Project Path="PressureContourEditor/PressureContourEditor.Domain.csproj" />
 </Solution>

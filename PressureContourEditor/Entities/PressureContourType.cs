@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PressureContourEditor.Domain.Entities
 {
-    public enum PunchingContourType
+    public enum PressureContourType
     {
         EndWall,
         WallCorner,

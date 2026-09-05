@@ -8,14 +8,14 @@ namespace PressureContourEditor.Domain.Tests
     public class CreateContourServiceTests
     {
         private ICreateContourService _createContourService;
-        private PunchingContour _punchingContour;
+        private PressureContour _punchingContour;
 
         [SetUp]
         public void Setup()
         {
             _createContourService = new CreateContourService();
 
-            PunchingContourType type = PunchingContourType.Pylon;
+            PressureContourType type = PressureContourType.Pylon;
 
             HashSet<ContourSideName> activeSides = new HashSet<ContourSideName>();
             activeSides.Add(ContourSideName.Right);
@@ -32,7 +32,7 @@ namespace PressureContourEditor.Domain.Tests
             Dictionary<(ContourSideName, PressureContourParametersRole), double> parameters = new();
             parameters.Add((ContourSideName.Left, PressureContourParametersRole.OffsetFromEnd), 0.0);
 
-            _punchingContour = new PunchingContour(
+            _punchingContour = new PressureContour(
                 _createContourService,
                 type,
                 activeSides,

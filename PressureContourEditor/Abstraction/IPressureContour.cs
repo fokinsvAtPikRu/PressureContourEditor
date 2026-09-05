@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PressureContourEditor.Domain.Abstraction
 {
-    public interface IPunchingContour
+    public interface IPressureContour
     {
-        PunchingContourType Type { get; set; }
+        PressureContourType Type { get; set; }
         HashSet<ContourSideName> ActiveSides { get; set; }
         Dictionary<DimensionsRole, double> Dimensions { get; set; }
         double H0 { get; }

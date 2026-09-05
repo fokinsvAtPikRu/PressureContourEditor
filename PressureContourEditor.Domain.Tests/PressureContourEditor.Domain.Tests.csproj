@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PressureContourEditor.Infrastacture\PressureContourEditor.Infrastacture.csproj" />
     <ProjectReference Include="..\PressureContourEditor\PressureContourEditor.Domain.csproj" />
   </ItemGroup>
 
