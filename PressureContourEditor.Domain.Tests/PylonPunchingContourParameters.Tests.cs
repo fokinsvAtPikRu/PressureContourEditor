@@ -4,14 +4,14 @@ using NUnit.Framework;
 using PressureContourEditor.Domain.Abstraction;
 using PressureContourEditor.Domain.Entities;
 using Moq;
+using PressureContourEditor.Domain.Exceptions;
 
 namespace PressureContourEditor.Tests.Domain.Entities
 {
     [TestFixture]
     public class PylonPunchingContourParametersTests
-    {
-        private Mock<ICreateContourService> _moqCreateContourService;
-        private GeometryContour _moqContour;
+    {        
+        
         private PressureContour _punchingContour;
 
         private const double H0 = 160.0;
@@ -25,21 +25,12 @@ namespace PressureContourEditor.Tests.Domain.Entities
         [SetUp]
         public void Setup()
         {
-            _moqCreateContourService = new Mock<ICreateContourService>();
-            _moqContour = new GeometryContour();
-
-            _moqCreateContourService
-                .Setup(x => x.CreateContour(It.IsAny<PressureContour>(), It.IsAny<double>()))
-                .Returns(_moqContour);
-
             var activeSides = CreateDafaultActiveSidesForPylon();
             var dimensions = CreateDefaultDimensionsForPylon();
             var parameters = CreateDefaultParameters();
 
-            _punchingContour = new PressureContour(
-                _moqCreateContourService.Object,
-                DefaultType,
-                activeSides,
+            _punchingContour = new PressureContour(                
+                DefaultType,                
                 dimensions,
                 H0,
                 parameters);
@@ -116,18 +107,14 @@ namespace PressureContourEditor.Tests.Domain.Entities
                 [(ContourSideName.Right, PressureContourParametersRole.HoleWidth)] = 0.0
             };
 
-        private static PressureContour CreatePunchingContour(
-            Mock<ICreateContourService> moqCreateContourService = null,
-            PressureContourType? type = null,
-            HashSet<ContourSideName> activeSides = null,
+        private static PressureContour CreatePunchingContour(            
+            PressureContourType? type = null,           
             Dictionary<DimensionsRole, double> dimensions = null,
             double? h0 = null,
             Dictionary<(ContourSideName, PressureContourParametersRole), double> parameters = null)
         {
-            return new PressureContour(
-                moqCreateContourService?.Object ?? new Mock<ICreateContourService>().Object,
-                type ?? DefaultType,
-                activeSides ?? CreateDafaultActiveSidesForPylon(),
+            return new PressureContour(                
+                type ?? DefaultType,                
                 dimensions ?? CreateDefaultDimensionsForPylon(),
                 h0 ?? H0,
                 parameters ?? CreateDefaultParameters());
@@ -142,10 +129,8 @@ namespace PressureContourEditor.Tests.Domain.Entities
             var expectedParameters = CreateDefaultParameters();
 
             // Act
-            var result = new PressureContour(
-                _moqCreateContourService.Object,
-                expectedType,
-                expectedActiveSides,
+            var result = new PressureContour(                
+                expectedType,                
                 expectedDimensions,
                 H0,
                 expectedParameters);
@@ -167,47 +152,23 @@ namespace PressureContourEditor.Tests.Domain.Entities
         public void Ctor_WhenParametersAreNull_ShouldThrowArgumentNullException()
         {
             Assert.Multiple(() =>
-            {
+            {                               
                 Assert.That(
-                    () => new PressureContour(
-                        null!,
-                        DefaultType,
-                        CreateDafaultActiveSidesForPylon(),
-                        CreateDefaultDimensionsForPylon(),
-                        H0,
-                        CreateDefaultParameters()),
-                    Throws.TypeOf<ArgumentNullException>()
-                    .With.Message.Contains("createContourService"));
-                Assert.That(
-                    () => new PressureContour(
-                        _moqCreateContourService.Object,
-                        DefaultType,
-                        null!,
-                        CreateDefaultDimensionsForPylon(),
-                        H0,
-                        CreateDefaultParameters()),
-                    Throws.TypeOf<ArgumentNullException>()
-                    .With.Message.Contains("activeSides"));
-                Assert.That(
-                    () => new PressureContour(
-                        _moqCreateContourService.Object,
-                        DefaultType,
-                        CreateDafaultActiveSidesForPylon(),
+                    () => new PressureContour(                        
+                        DefaultType,                        
                         null!,
                         H0,
                         CreateDefaultParameters()),
-                    Throws.TypeOf<ArgumentNullException>()
-                    .With.Message.Contains("dimensions"));
+                    Throws.TypeOf<CreateContourException>()
+                    .With.Message.Contains("dimensions is null"));
                 Assert.That(
-                    () => new PressureContour(
-                        _moqCreateContourService.Object,
-                        DefaultType,
-                        CreateDafaultActiveSidesForPylon(),
+                    () => new PressureContour(                        
+                        DefaultType,                        
                         CreateDefaultDimensionsForPylon(),
                         H0,
                         null!),
-                    Throws.TypeOf<ArgumentNullException>()
-                    .With.Message.Contains("parameters"));
+                    Throws.TypeOf<CreateContourException>()
+                    .With.Message.Contains("parameters is null"));
             });
         }
 
