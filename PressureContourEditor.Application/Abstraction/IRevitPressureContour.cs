@@ -1,5 +1,5 @@
-﻿using PressureContourEditor.Domain.Entities;
-using PressureContourEditor.Domain.GeometryPrimitives;
+﻿using PressureContourEditor.Domain.GeometryPrimitives;
+using PressureContourEditor.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

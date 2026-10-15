@@ -2,6 +2,7 @@
 using PressureContourEditor.Domain.Entities;
 using PressureContourEditor.Domain.GeometryPrimitives;
 using PressureContourEditor.Domain.Services;
+using PressureContourEditor.Domain.ValueObjects;
 
 namespace PressureContourEditor.Domain.Tests
 {

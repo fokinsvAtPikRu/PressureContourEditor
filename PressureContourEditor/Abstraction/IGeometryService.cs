@@ -2,6 +2,7 @@
 using PressureContourEditor.Domain.Configuration;
 using PressureContourEditor.Domain.Entities;
 using PressureContourEditor.Domain.GeometryPrimitives;
+using PressureContourEditor.Domain.ValueObjects;
 
 namespace PressureContourEditor.Domain.Abstraction
 {

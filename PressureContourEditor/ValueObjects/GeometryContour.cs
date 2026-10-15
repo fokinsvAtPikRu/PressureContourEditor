@@ -1,7 +1,7 @@
 ﻿using PressureContourEditor.Domain.GeometryPrimitives;
 using System.Collections;
 
-namespace PressureContourEditor.Domain.Entities
+namespace PressureContourEditor.Domain.ValueObjects
 {
     public class GeometryContour : IEnumerable<KeyValuePair<ContourSideName, Line2D>>
     {
@@ -26,7 +26,7 @@ namespace PressureContourEditor.Domain.Entities
             {
                 Lines.Add(sideName, line);
             }
-            catch (System.ArgumentException)
+            catch (ArgumentException)
             {
                 return false;
             }

@@ -3,6 +3,7 @@ using PressureContourEditor.Domain.Abstraction;
 using PressureContourEditor.Domain.Entities;
 using PressureContourEditor.Domain.GeometryPrimitives;
 using PressureContourEditor.Domain.Services;
+using PressureContourEditor.Domain.ValueObjects;
 using System.Runtime.CompilerServices;
 
 namespace PressureContourEditor.ApplicationTests

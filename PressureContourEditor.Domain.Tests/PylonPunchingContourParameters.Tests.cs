@@ -5,6 +5,7 @@ using PressureContourEditor.Domain.Abstraction;
 using PressureContourEditor.Domain.Entities;
 using Moq;
 using PressureContourEditor.Domain.Exceptions;
+using PressureContourEditor.Domain.ValueObjects;
 
 namespace PressureContourEditor.Tests.Domain.Entities
 {

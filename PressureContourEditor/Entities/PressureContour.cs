@@ -1,28 +1,29 @@
-﻿using PressureContourEditor.Domain.Abstraction;
+﻿using CSharpFunctionalExtensions;
 using PressureContourEditor.Domain.Exceptions;
 using PressureContourEditor.Domain.GeometryPrimitives;
-using System.Collections.Generic;
+using PressureContourEditor.Domain.ValueObjects;
+
 
 namespace PressureContourEditor.Domain.Entities
 {
-    public class PressureContour 
+    public abstract class PressureContour 
     {        
-        public PressureContourType Type { get; private set; }
-        public HashSet<ContourSideName> ActiveSides { get; private set; }
+        public PressureContourType Type { get; set; }
+        public HashSet<ContourSideName> ActiveSides { get; set; }
         public Dictionary<DimensionsRole,double> Dimensions { get; set; }
-        public double H0 { get; }
-        public Dictionary<(ContourSideName, PressureContourParametersRole), double> Parameters { get; set; }      
+        public double H0 { get; set; }
+        public PressureContourParameters Parameters { get; set; }      
 
         public GeometryContour ContourHalfH0 { get; }
         public GeometryContour Contour6H0 { get; }        
 
        
 
-        public PressureContour(            
+        private protected PressureContour(            
             PressureContourType pressureContourType,            
             Dictionary<DimensionsRole,double> dimensions,
             double h0,
-            Dictionary<(ContourSideName, PressureContourParametersRole), double> parameters)
+            Dictionary<ParameterKey, double> parameters)
         {            
             Type = pressureContourType;
             ActiveSides = new HashSet<ContourSideName>();
@@ -49,10 +50,7 @@ namespace PressureContourEditor.Domain.Entities
             switch (Type)
             {
                 case PressureContourType.EndWall:
-                    if (!Dimensions.ContainsKey(DimensionsRole.Thickness))
-                        throw new CreateContourException("При создании контура типа торец стены не получен параметер Толщина стены - thickness");
-                    if (Dimensions[DimensionsRole.Thickness]<=0)
-                        throw new CreateContourException("При создании контура типа торец стены Толщина стены должна быть больше ноля");
+                    
                     break;
                 case PressureContourType.WallCorner:
                     string message=String.Empty;
@@ -80,12 +78,58 @@ namespace PressureContourEditor.Domain.Entities
             if (h0<=0)
                 throw new CreateContourException("Параметр H0 должен быть больше ноля");
             H0 = h0;
-            Parameters = parameters ?? throw new CreateContourException("При создании контура параметр parameters is null");                    
+            Parameters = parameters ?? throw new CreateContourException("При создании контура параметр parameters is null");
+            
             ContourHalfH0 = CreateContour( 0.5 * h0);
             Contour6H0 = CreateContour(6 * h0);
         }
 
-        private GeometryContour CreateContour(double offset)
+        public virtual Result<PressureContour> Create(
+            PressureContourType pressureContourType,
+            Dictionary<DimensionsRole, double> dimensions,
+            double h0,
+            Dictionary<ParameterKey, double> parameters)
+        {
+            var result = Validate(pressureContourType, dimensions, h0, parameters);
+            if (result.IsFailure)
+                return Result.Failure<PressureContour>(result.Error);
+            PressureContour(pressureContourType, dimensions, h0, parameters);
+
+
+
+        }
+
+
+
+        private virtual Result Validate(
+            PressureContourType pressureContourType,
+            Dictionary<DimensionsRole, double> dimensions,
+            double h0,
+            Dictionary<ParameterKey, double> parameters)
+        {
+            string errorMessage = String.Empty;
+            if (pressureContourType != PressureContourType.Pylon)
+                errorMessage += "Неверный тип контура\n";
+            if (dimensions == null)
+                errorMessage += "Коллекция размеров не создана\n";
+            else
+            {
+                if (!Dimensions.ContainsKey(DimensionsRole.Thickness))
+                    errorMessage += "При создании контура типа торец стены не получен параметер Толщина стены - thickness\n";
+                if (Dimensions[DimensionsRole.Thickness] <= 0)
+                    errorMessage += "При создании контура типа торец стены Толщина стены должна быть больше ноля\n";
+            }
+            if (h0 <= 0)
+                errorMessage += "Параметр h0 меньше или равен нулю\n";
+            if (parameters == null)
+                errorMessage += "Не созданы параметры подрезки контура\n";            
+            if (String.IsNullOrEmpty(errorMessage))
+                return Result.Success();
+            else
+                return Result.Failure(errorMessage);
+        }
+
+        public virtual Result<GeometryContour> CreateContour(double offset)
         {
             Point2D bottomRight;
             Point2D bottomLeft;
@@ -138,7 +182,7 @@ namespace PressureContourEditor.Domain.Entities
             for (var i = 0; i < contourLines.Length; i++)
             {
                 if (!contour.TryAddItem((ContourSideName)values.GetValue(i), contourLines[i]))
-                    return new GeometryContour($"Не удалорсь добавить сторону {(ContourSideName)values.GetValue(i)}");
+                    return Result.Failure<GeometryContour>($"Не удалорсь добавить сторону {(ContourSideName)values.GetValue(i)}");
             }
 
             return contour;
